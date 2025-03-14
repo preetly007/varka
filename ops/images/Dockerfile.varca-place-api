@@ -1,0 +1,13 @@
+# docker build --tag "149736408060.dkr.ecr.ap-south-1.amazonaws.com/varca-app:place-api" --file ops/images/Dockerfile.varca-place-api .
+
+FROM 149736408060.dkr.ecr.ap-south-1.amazonaws.com/varca-app:base
+
+
+RUN mkdir -p /app/configs
+
+RUN cp -r /varca/hosts/Varca.Place.API/bin/Release/net8.0/publish/* /app
+RUN cp -r /varca/configs/* /app/configs
+
+
+WORKDIR /app
+ENTRYPOINT ["dotnet", "Varca.Place.API.dll"]

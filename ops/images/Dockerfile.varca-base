@@ -1,0 +1,28 @@
+# docker build --build-arg FEED_ACCESSTOKEN="***" --tag "149736408060.dkr.ecr.ap-south-1.amazonaws.com/varca-app:base" --file ops/images/Dockerfile.varca-base .
+# docker scout quickview
+# docker scout cves local://varca-base:1.0
+
+
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+WORKDIR /build
+
+ADD . .
+
+RUN curl -L https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh  | sh
+
+ARG FEED_ACCESSTOKEN
+ENV VSS_NUGET_EXTERNAL_FEED_ENDPOINTS="{\"endpointCredentials\": [{\"endpoint\":\"https://pkgs.dev.azure.com/vervo-tech/c8a17882-0eb3-468a-b607-fe703102ff76/_packaging/hms/nuget/v3/index.json\", \"username\":\"docker\", \"password\":\"${FEED_ACCESSTOKEN}\"}]}"
+
+RUN dotnet publish Varca.sln -c Release
+
+##########################
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+
+
+WORKDIR /varca
+COPY --from=build /build/src/hosts ./hosts
+COPY --from=build /build/configs ./configs
+
+

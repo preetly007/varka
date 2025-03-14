@@ -1,0 +1,88 @@
+[
+    {
+        "name": "ean test name",
+        "publishKey": "EAN",
+        "channelIds": ["_*"],
+        "ratings": "5",
+        "chainCode": "R",
+        "geoLocation": {
+            "type": "Point",
+            "coordinates": [73.8544541, 18.521428]
+        }
+    },
+    {
+        "name": "ean test name1",
+        "publishKey": "EAN",
+        "channelIds": ["_*"],
+        "ratings": "4",
+        "chainCode": "R1",
+        "geoLocation": {
+            "type": "Point",
+            "coordinates": [73.8544541, 18.521428]
+        }
+    },
+    {
+        "name": "ean test name2",
+        "publishKey": "EAN",
+        "channelIds": ["_*"],
+        "ratings": "4",
+        "chainCode": "R",
+        "geoLocation": {
+            "type": "Point",
+            "coordinates": [73.8544541, 18.521428]
+        }
+    },
+    {
+        "name": "priceline test name",
+        "publishKey": "Priceline",
+        "channelIds": ["Agoda"],
+        "ratings": "4",
+        "chainCode": "Q1",
+        "geoLocation": {
+            "type": "Point",
+            "coordinates": [73.8544541, 18.521428]
+        }
+    },
+    {
+        "name": "priceline test name1",
+        "publishKey": "Priceline",
+        "channelIds": ["PricelineNew"],
+        "ratings": "5",
+        "chainCode": "Q1",
+        "geoLocation": {
+            "type": "Point",
+            "coordinates": [73.8544541, 18.521428]
+        }
+    },
+    {
+        "name": "priceline test name1",
+        "publishKey": "Priceline",
+        "channelIds": ["Agoda", "PricelineNew"],
+        "ratings": "5",
+        "chainCode": "Q2",
+        "geoLocation": {
+            "type": "Point",
+            "coordinates": [73.8544541, 18.521428]
+        }
+    }
+]
+
+
+{ 
+    $and: [
+        { PublishKey: {$in: ["vervotech__akbar__Agoda"]}},
+        { ChannelIds: { $elemMatch: {$in: ["_*", "Agoda", "PricelineNew"]}}}, 
+        { GeoLocation: { 
+            $nearSphere: { 
+                $geometry: { type: "Point", coordinates: [ 73.8544541, 18.521428 ] }, 
+                $maxDistance: 10000 
+            } 
+        }
+        }, 
+        { PropertyType: {$in: ["Hotel"]}}, 
+        { Rating: { $in: ["3"]}}, 
+        { ChainCode: {$in: ["2453"]}}
+    ]
+}
+
+{ ChannelIds : { $filter : { input : "$ChannelIds", as : "n", cond : { $ne : ["$$n" , "_*"] } }}}
