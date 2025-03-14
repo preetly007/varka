@@ -1,0 +1,17 @@
+# docker build --tag "149736408060.dkr.ecr.ap-south-1.amazonaws.com/varca-app:ghms-api" --file ops/images/Dockerfile.varca-ghms-api .
+
+FROM 149736408060.dkr.ecr.ap-south-1.amazonaws.com/varca-app:base
+
+
+RUN mkdir -p /app/configs
+
+RUN cp -r /varca/hosts/Varca.GeoSearch.API/bin/Release/net8.0/publish/* /app
+RUN cp -r /varca/configs/* /app/configs
+
+
+WORKDIR /app
+ENTRYPOINT ["dotnet", "Varca.GeoSearch.API.dll"]
+ 
+
+
+

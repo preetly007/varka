@@ -1,0 +1,95 @@
+---
+## uber.yml config is shared accross varca microservices and shoeboxes
+
+geoStore:
+  type: mongodb
+  url: mongodb://localhost:27017
+  db: varcaDb
+  ghmsCollection: varcaGeoHotelMappingsV1
+  ghmsIdx: geoSearchHotelMappingsIndexV1
+
+contentStore:
+  type: mongodb
+  url: mongodb://localhost:27017
+  db: varcaContentDb
+  contentCollection: ""
+  contentIdx: ""
+
+placeStore:
+  type: elasticsearch
+  nodes:
+    - "http://localhost:9200"
+  apikey: "UGpqY05vNEJwRVo4cVAwUVdVYnY6OUlPNWk2ZFBUdS12V3lLSVlJU0xlQQ=="
+  ca: "bb8f570cb2c7d839d90107a4621f49da9d755432c7abcacc7a6839741fc40333"
+  userId: elastic
+  password: "aA=SYK1gA5z*At+1uQ6y"
+  placeVervotechIdx: varca-geo-places-vervotech-v4
+  placeEanIdx: varca-geo-places-ean-v1
+
+cacheStore:
+  type: redis
+  url: localhost:6379
+
+pitStreamStore:
+  type: redis
+  url: localhost:6379
+  
+pitStreams:
+  type: redis
+  msgKey: message
+  geometryDefault: varca-pit-stream-geometry-default
+  geometryDefaultConsumer: varca-pit-geometry-consumer-default
+  placeDefault: varca-pit-stream-place-default
+  placeDefaultConsumer: varca-pit-place-consumer-default
+  geometryPriorities: ~
+  placePriorities: ~
+
+unicaDbReadOnlyMigration:
+  type: mongodb
+  url: 'mongodb://app:vervozaq1ZAQ!@mongo-core-0.mapping.vervotech.com:27017/admin?authMechanism=SCRAM-SHA-1&directConnection=true'
+
+unicaDbReadOnly:
+  type: mongodb
+  url: 'mongodb://app:vervozaq1ZAQ!@mongo-core-0.mapping.vervotech.com:27017/admin?authMechanism=SCRAM-SHA-1&directConnection=true'
+  unicaConfigDb: unicaConfiguration
+  unicaProvidersCollection: providers
+
+varcaServices:
+  place:
+    address: 127.0.0.1
+    port: 8081
+  ghms:
+    address: 127.0.0.1
+    port: 8080
+  pit:
+    address: 127.0.0.1
+    port: 8082
+  content:
+    address: 127.0.0.1
+    port: 8083
+
+services:
+  osm:
+    endPoint: https://nominatim.openstreetmap.org/search
+
+shoeboxes:
+  type: rabbitmq
+  endPoint: ""
+  ghmsShoebox: 
+    sourceQueue: ""
+    destinationExhange: ""
+  placeShoebox:
+    sourceQueue: ""
+    destinationExchange: ""
+  scorerShoebox:
+    sourceQueue: ""
+    destinationExchange: ""
+
+
+
+
+
+
+
+
+
